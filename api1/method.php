@@ -46,7 +46,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $nombre = $datos['nombre'];
         $apodo = $datos['apodo'];
         $tel = $datos['tel'];
-        $foto = $datos['foto'];
+        #$foto = $datos['foto'];
+
     
         $actualizaciones = array();
         if (!empty($apodo)) {
