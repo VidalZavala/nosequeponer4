@@ -1,0 +1,7 @@
+{
+  "name": "trabajofued",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

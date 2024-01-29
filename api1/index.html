@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Ejemplo de REST a nivel bajo</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+  <button id="get">GET request</button>
+  <button id="post">POST request</button>
+  <button id="put">PUT request</button>
+  <button id="delete">DELETE request</button>
+
+  <h1>Tabla de Datos</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Titulo</th>
+        <th>Contenido</th>
+        <th>Creado En</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-body">
+      <!-- Los resultados de la API se mostrarán aquí -->
+    </tbody>
+  </table>
+
+  <script>
+    // Realizar la solicitud GET a la API en PHP
+    fetch('method.php')
+      .then(response => response.json())
+      .then(data => {
+        const tablaBody = document.getElementById('tabla-body');
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.titulo}</td>
+            <td>${item.contenido}</td>
+            <td>${item.creado_en}</td>
+          `;
+          tablaBody.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+
+  <h1>API de Ejemplo (POST)</h1>
+  <form id="miFormulario1">
+    <label for="id_usuario">ID de Usuario:</label>
+    <input type="text" id="id_usuario" name="id_usuario" required><br><br>
+
+    <label for="titulo">Titulo:</label>
+    <input type="text" id="titulo" name="titulo" required><br><br>
+
+    <label for="contenido">Contenido:</label>
+    <input type="text" id="contenido" name="contenido" required><br><br>
+
+    <input type="submit" value="Enviar">
+  </form>
+
+  <div id="resultado1"></div>
+
+  <iframe src="put.php" width="100%" height="300" style="border:none;"></iframe>
+  <iframe src="index2.php" width="100%" height="100%" style="border:none;"></iframe>
+
+  <script>
+    const formulario1 = document.getElementById('miFormulario1');
+    const resultadoDiv1 = document.getElementById('resultado1');
+
+    formulario1.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(formulario1);
+
+      fetch('method.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        resultadoDiv1.textContent = data;
+        formulario1.reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      var requestTypes = ["get", "post", "put", "delete"];
+
+      $.each(requestTypes, function(index, value) {
+        $('#' + value).on('click', function() {
+          request = triggerRequest(value);
+        });
+      });
+
+      function triggerRequest(requestType) {
+        if ($.inArray(requestType, requestTypes) !== -1) {
+          var data = {
+            id_usuario: $("#id_usuario").val(),
+            firstname: "John",
+            lastname: "doe"
+          };
+          return $.ajax({
+            method: requestType,
+            url: "method.php",
+            cache: false,
+            async: true,
+            data: data
+          }).done(function(msg) {
+            alert("request methode = " + msg);
+          }).fail(function(jqXHR, textStatus) {
+            console.error("Request failed: ");
+            console.error(textStatus);
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>
