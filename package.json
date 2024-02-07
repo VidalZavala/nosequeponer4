@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.2"
+  },
+  "config": {
+    "ionic_sass": "./sass.config.js" 
+  }
+}
